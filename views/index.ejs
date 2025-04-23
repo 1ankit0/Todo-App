@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title class="todo">Todo App</title>
+  <style>
+    /* Basic styling */
+    body { font-family: Arial; max-width: 600px; margin: 0 auto; padding: 20px; background-color:cornflowerblue}
+    .completed { text-decoration: line-through; color: #888; text-decoration-color: #eee; }
+    form { display: flex; margin-bottom: 20px; }
+    input[type="text"] { flex-grow: 1; padding: 8px; }
+    button { padding: 8px 15px; margin-left: 5px; }
+    ul { list-style: none; padding: 0; }
+    li { padding: 10px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; }
+    .actions a { margin-left: 10px }
+    
+  </style>
+</head>
+<body>
+  <h1>Todo List</h1>
+  
+  <!-- Add Task Form -->
+  <form action="/add" method="POST">
+    <input type="text" name="task" placeholder="Add Tasks.." required>
+    <button type="submit">Add</button>
+  </form>
+
+ 
+
+  <!-- Todo List -->
+  <ul>
+    <% todos.forEach(function(todo) { %>
+        <li class="<% if(todo.completed) { %>completed<% } %>">
+            <%= todo.task %>
+            
+            <div class="actions">
+              <a href="/toggle/<%= todo._id %>">
+                <% if(todo.completed) { %>
+                  Undo
+                <% } else { %>
+                  Complete
+                <% } %>
+              </a>
+    
+              <a href="/delete/<%= todo._id %>">Delete</a>
+    
+              <!-- <a href="/update/<%= todo.task %>">Update</a> -->
+               <!-- Update Form - Yeh Naya Add Karna Hai -->
+        <form action="/update/<%= todo._id %>" method="POST" style="display: inline;">
+            <input type="text" name="newTask" placeholder="New task" required>
+            <button type="submit">Update</button>
+          </form>
+            </div>
+        </li>
+    <% }); %>
+    </ul>
+</body>
+</html>
