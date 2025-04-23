@@ -6,8 +6,8 @@ const Todos = require('./models/todo.models.js');
 
 
 // Middleware setup
-app.use(express.urlencoded({ extended: true })); // Parse form data
-// app.use(express.static('public')); // Serve static files from 'public' folder
+app.use(express.urlencoded({ extended: true })); 
+// app.use(express.static('public')); // Serving static files from 'public' folder
 app.set('view engine', 'ejs'); 
 app.set('views', path.join(__dirname, 'views'));
 
@@ -16,12 +16,12 @@ mongoose.connect('mongodb+srv://Ankit:Ankit123@cluster0.g7a3p7h.mongodb.net')
 .catch((err) => {console.log('MongoDB Connection Error:', err)});
 
 app.get('/', async (req, res) => {
-  const todos = await Todos.find(); // Database se sab todos lao
-  res.render('index',{todos}); // EJS template ko bhejo
+  const todos = await Todos.find(); 
+  res.render('index',{todos}); 
 });
 
 app.post('/add', async (req, res) => {
-  const newTodo = new Todos({ task: req.body.task }); // form se task
+  const newTodo = new Todos({ task: req.body.task }); 
   await newTodo.save();
 // const addTodo = await req.body.task;
 // const todo = new Todos({task: addTodo})
@@ -31,7 +31,7 @@ app.post('/add', async (req, res) => {
 
 
 app.get('/toggle/:id', async (req, res) => {
-  const todo = await Todos.findById(req.params.id); // ID se todo dhundho
+  const todo = await Todos.findById(req.params.id); 
   todo.completed = !todo.completed; 
   await todo.save();
   res.redirect('/');
@@ -52,7 +52,7 @@ app.post('/update/:id', async (req, res) => {
     res.redirect('/');
   });
 
-// Start server
+
 const PORT = 2000;
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
