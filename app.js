@@ -5,7 +5,7 @@ const path = require('path');
 const mongoose = require('mongoose');
 const Todos = require('./models/todo.models.js');
 
-
+const PORT = process.env.PORT || 2000
 // Middleware setup
 app.use(express.urlencoded({ extended: true })); 
 app.set('view engine', 'ejs'); 
@@ -52,6 +52,6 @@ app.post('/update/:id', async (req, res) => {
   });
 
 // Start server
-app.listen(process.env.PORT || 2000, () => {
+app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });
