@@ -1,5 +1,6 @@
 const express = require('express'); 
 const app = express();
+require('dotenv').config();
 const path = require('path'); 
 const mongoose = require('mongoose');
 const Todos = require('./models/todo.models.js');
@@ -7,13 +8,12 @@ const Todos = require('./models/todo.models.js');
 
 // Middleware setup
 app.use(express.urlencoded({ extended: true })); 
-// app.use(express.static('public')); // Serving static files from 'public' folder
 app.set('view engine', 'ejs'); 
 app.set('views', path.join(__dirname, 'views'));
 
-mongoose.connect('mongodb+srv://Ankit:Ankit123@cluster0.g7a3p7h.mongodb.net')
-.then(() => {console.log('MongoDB Connected')})
-.catch((err) => {console.log('MongoDB Connection Error:', err)});
+mongoose.connect(process.env.MONGO_URL)
+.then(() => console.log('MongoDB Connected'))
+.catch(err => console.log('MongoDB Connection Error:', err));
 
 app.get('/', async (req, res) => {
   const todos = await Todos.find(); 
@@ -21,17 +21,16 @@ app.get('/', async (req, res) => {
 });
 
 app.post('/add', async (req, res) => {
-  const newTodo = new Todos({ task: req.body.task }); 
+  const newTodo = new Todos({
+    task: req.body.task 
+});
   await newTodo.save();
-// const addTodo = await req.body.task;
-// const todo = new Todos({task: addTodo})
-// await todo.save()
   res.redirect('/'); 
 });
 
 
 app.get('/toggle/:id', async (req, res) => {
-  const todo = await Todos.findById(req.params.id); 
+  const todo = await Todos.findById(req.params.id);
   todo.completed = !todo.completed; 
   await todo.save();
   res.redirect('/');
@@ -52,8 +51,7 @@ app.post('/update/:id', async (req, res) => {
     res.redirect('/');
   });
 
-
-const PORT = 2000;
-app.listen(PORT, () => {
+// Start server
+app.listen(process.env.PORT || 2000, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });
